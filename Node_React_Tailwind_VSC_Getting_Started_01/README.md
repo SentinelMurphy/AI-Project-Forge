@@ -4,6 +4,7 @@
 
 This guide, will cover:
 - Install and verify Node.js 22 on Windows and Linux
+- Troubleshoot Node.js setup on Windows (PATH issues)
 - Create and configure a React 19 project with Vite and Tailwind CSS
 - Install and set up Visual Studio Code (VSC) for modern JavaScript/React development
 - Connect VSC to GitHub, clone repositories, and manage branches
@@ -36,6 +37,23 @@ This guide, will cover:
    npm -v
    ```
    Output should show version 22.x.x.
+
+---
+
+### **Troubleshooting Node.js Not Found**
+
+If you get an error like `'node' is not recognized as an internal or external command`:
+
+- **Close and reopen your terminal/VS Code** (the PATH variable may not update until you do).
+- If it still fails:
+    1. Open the Start menu, search for "Environment Variables" and select “Edit the system environment variables.”
+    2. In the System Properties window, click “Environment Variables.”
+    3. Under “System variables”, find `Path` and click “Edit.”
+    4. Click “New”, add the path to your Node.js installation folder (usually `C:\Program Files\nodejs\`).
+    5. Click OK to save all dialogs.
+    6. Open a **new** terminal and run `node -v` again.
+
+---
 
 ### Linux (Ubuntu/Debian)
 
@@ -106,42 +124,55 @@ If starting a new project:
 
 ---
 
-## 6. Add the Latest Tailwind CSS
+## 6. Add Tailwind CSS (Vite-managed, Tailwind v4+)
 
-1. In the project root, run:
+Vite works with Tailwind through PostCSS—no extra Vite config needed.
+
+1. Make sure you’re in your project root
+    - The folder containing `package.json` (and `vite.config.ts/js`).
+    - If `vite.config.ts/js` is not there create it.  
+    - In VS Code, open this folder and open a terminal (`Ctrl+\``). Run `dir` (Windows) or `ls` (macOS/Linux) and confirm you see `package.json`.
+
+2. Install Tailwind, PostCSS, and Autoprefixer
    ```sh
    npm install -D tailwindcss postcss autoprefixer
-   npx tailwindcss init -p
    ```
-2. Edit `tailwind.config.js`:
-   ```js
-   /** @type {import('tailwindcss').Config} */
-   module.exports = {
-     content: [
-       "./index.html",
-       "./src/**/*.{js,jsx,ts,tsx}"
-     ],
-     theme: {
-       extend: {},
-     },
-     plugins: [],
-   }
-   ```
-3. Replace all content in `src/index.css` (or `src/main.css`) with:
-   ```css
-   @tailwind base;
-   @tailwind components;
-   @tailwind utilities;
-   ```
-4. Ensure your CSS file is imported in `src/main.jsx`:
-   ```js
-   import './index.css';
-   ```
-5. Start the dev server:
+
+3. Add PostCSS config (Vite auto-detects this)
+    - If your `package.json` has `"type": "module"`:
+      ```js
+      // postcss.config.js
+      export default {
+        plugins: {
+          tailwindcss: {},
+          autoprefixer: {},
+        },
+      }
+      ```
+
+4. Add Tailwind to your CSS
+    - Create `src/index.css` (or `src/main.css`) and add:
+      ```css
+      @import "tailwindcss";
+      ```
+      (Classic directives also work if you prefer:)
+      ```css
+      /* @tailwind base;
+      @tailwind components;
+      @tailwind utilities; */
+      ```
+
+5. Import the CSS in your app entry point
+    - In `src/main.jsx` (or `src/main.tsx`):
+      ```js
+      import "./index.css";
+      ```
+
+6. Start your development server
    ```sh
    npm run dev
    ```
-6. Open the local URL (http://localhost:5173) to view your app.
+   Open the URL shown in the terminal (usually http://localhost:5173).
 
 ---
 
