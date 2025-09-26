@@ -40,6 +40,18 @@ This guide, will cover:
 
 ---
 
+### **Troubleshooting npm**
+
+If npm -v shows the following error
+"cannot be loaded because running scripts is disabled on this system."
+
+Use the following command to change your users Execution policy from Restricted to RemoteSigned
+```sh
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+```
+
+RemoteSigned policy allows you use of tools like npm in Powershell and execute local scripts.
+
 ### **Troubleshooting Node.js Not Found**
 
 If you get an error like `'node' is not recognized as an internal or external command`:
