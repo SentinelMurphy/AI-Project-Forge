@@ -15,11 +15,11 @@ This guide will help you understand the basics of working with a React project. 
 **Example:**
 
 ```jsx
-// src/components/Header.jsx
-function Header() {
-  return <h1 className="text-2xl font-bold text-center">Welcome!</h1>;
+// src/components/Header/Header.jsx
+
+export default function Header() {
+  return <h1 className="text-2xl font-bold text-center">Welcome! Home</h1>;
 }
-export default Header;
 ```
 
 ---
@@ -34,12 +34,12 @@ export default Header;
 
 ```jsx
 // src/pages/Home.jsx
-import Header from '../components/Header';
+import Header from '../components/Header/Header';
 function Home() {
   return (
     <div>
       <Header />
-      <p>Hello, this is your home page!</p>
+      <p>Hello, this is your Home page!</p>
     </div>
   );
 }
@@ -48,36 +48,15 @@ export default Home;
 
 ---
 
-### Routing
+**Create a About Page.**
 
-- **What:** Routing lets users navigate between pages (e.g. `/home`, `/about`).
-- **How:** Use [React Router](https://reactrouter.com/) (a popular npm package).
+Now do the same code as Home Page for About Page. 
 
-**Install React Router:**
-```bash
-npm install react-router-dom
-```
+   - Create a About page called `About.jsx`
+   - Same code as `Home.jsx` but change the function name & export name.
+   - Import the Header
+   - Update the `<p>` Text with Hello, this is your About page!
 
-**Example Setup:**
-
-```jsx
-// src/App.jsx
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import About from './pages/About';
-
-function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-      </Routes>
-    </BrowserRouter>
-  );
-}
-export default App;
-```
 ---
 
 ## 2. Best Practices
@@ -110,7 +89,39 @@ npm uninstall <package-name>
 
 ---
 
-## 4. What is a .gitignore File? What to Put in It?
+## 4.  Routing
+
+- **What:** Routing lets users navigate between pages (e.g. `/home`, `/about`).
+- **How:** Use [React Router](https://reactrouter.com/) (a popular npm package).
+
+**Install React Router:**
+```bash
+npm install react-router-dom
+```
+
+**Example Setup:**
+
+```jsx
+// src/App.jsx
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import About from './pages/About';
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+export default App;
+```
+---
+
+## 5. What is a .gitignore File? What to Put in It?
 
 - **What:** A `.gitignore` file tells Git which files or folders should NOT be tracked or uploaded to your repository (e.g., build files, dependencies, environment variables).
 - **Why:** Keeps your repository clean and avoids committing files that are large, auto-generated, or contain sensitive information.
@@ -152,7 +163,7 @@ pnpm-debug.log*
 
 ---
 
-## 5. .nvmrc File for Node 22
+## 6. .nvmrc File for Node 22
 
 - **What:** `.nvmrc` is a file that tells [nvm (Node Version Manager)](https://github.com/nvm-sh/nvm) which Node.js version your project uses.
 - **How:** Put the Node version number in `.nvmrc`
@@ -163,7 +174,7 @@ pnpm-debug.log*
 22
 ```
 
-## 6. How to Set Up nvm (Node Version Manager)
+## 7. How to Set Up nvm (Node Version Manager)
 
 Managing Node.js versions with nvm ensures everyone on your team uses the same Node version.  
 Here’s how to set it up for both Linux/macOS and Windows, and how to test it with VS Code.
@@ -272,7 +283,7 @@ node -v
 
 ---
 
-## 7. Setting Up SCSS Modules
+## 8. Setting Up SCSS Modules
 
 **SCSS modules** allow you to write scoped styles for components.
 
@@ -281,20 +292,27 @@ node -v
 npm install --save-dev sass
 ```
 
-**Usage Example:**
+Create a folder for each component. Keep the component file and its SCSS module together:
 
-```scss
-/* src/components/Button.module.scss */
-.button {
-  background-color: #3490dc;
-  color: white;
-  padding: 8px 16px;
-  border-radius: 4px;
-}
+```
+src/
+  components/
+    Button/
+      Button.jsx
+      Button.module.scss
+  pages/
+    Home.jsx
+    About.jsx
 ```
 
+---
+
+**Usage Example:**
+
+- Add your Style also in the same folder as your component and call it the same name.
+
 ```jsx
-// src/components/Button.jsx
+// src/components/Button/Button.jsx
 import styles from './Button.module.scss';
 
 function Button({ children }) {
@@ -303,21 +321,132 @@ function Button({ children }) {
 export default Button;
 ```
 
+```scss
+/* src/components/Button/Button.module.scss */
+.button {
+  background-color: #3490dc;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+}
+```
+
 - **Tip:** The `.module.scss` naming tells Vite/React to treat these styles as modules (scoped to this component).
+
+
+---
+
+## 9. Passing a Prop to a component.
+
+### 8.3 Create the Button Component action and pass prop.
+
+The button:
+- Uses a SCSS module for its base styling.
+- Uses a small function to take in a prop of string name.
+- Shows an alert with the page name when clicked.
+
+```jsx
+// src/components/Button/Button.jsx
+
+import styles from './Button.module.scss';
+
+export default function Button({page}) {
+  function handleClick() {
+    alert(`Page Name : ${page}`);
+  }
+
+  return (
+    <button className={styles.button} onClick={handleClick}>
+      Click Me
+    </button>
+  );
+}
+
+```
+
+```scss
+/* src/components/Button/Button.module.scss */
+.button {
+  background: #0ea5e9;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.12s ease;
+}
+
+.button:hover {
+  background: #0284c7;
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+```
+
+
+---
+
+### 8.4 Use the Button in the Home Page
+
+```jsx
+// src/pages/Home.jsx
+import Header from '../components/Header/Header';
+import Button from '../components/Button/Button';
+
+export default function Home() {
+  return (
+    <main className="p-6 space-y-4">
+      <Header />
+      <h1 className="text-3xl font-bold text-sky-600">Home</h1>
+      <p className="text-gray-700">This is your home page.</p>
+      <Button page='Home'/>
+    </main>
+  );
+}
+```
+
+### 8.5 Use the Button in the About Page
+
+```jsx
+// src/pages/About.jsx
+import Header from '../components/Header/Header';
+import Button from '../components/Button/Button';
+
+export default function About() {
+  return (
+    <main className="p-6 space-y-4">
+      <Header />
+      <h1 className="text-3xl font-bold text-sky-600">About</h1>
+      <p className="text-gray-700">This page tells users about the app.</p>
+      <Button page='About'/>
+    </main>
+  );
+}
+```
+
+Clicking the button on each page will alert either “Home” or “About” based on the current props required.
+
+
 
 ---
 
 ## Project Structure Example
 
 ```
-my-app/
+forge/
 ├── .gitignore
 ├── .nvmrc
 ├── package.json
 ├── src/
 │   ├── components/
-│   │   ├── Header.jsx
-│   │   └── Button.module.scss
+│   │   ├── Header/
+│   │   │   ├── Header.jsx
+│   │   ├── Button/
+│   │   │   ├── Button.jsx
+│   │   │   └── Button.module.scss
 │   ├── pages/
 │   │   ├── Home.jsx
 │   │   └── About.jsx
