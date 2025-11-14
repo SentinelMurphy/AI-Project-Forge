@@ -1,6 +1,6 @@
 # Add a Python FastAPI Backend to a Vite React App
 
-Goal: Add a simple Python FastAPI backend under `Project/backend`, return fake data, and call it from your existing Vite React UI under `Project_01/forge`.
+Goal: Add a simple Python FastAPI backend under `Project/backend`, return fake data, and call it from your existing Vite React UI under `Project/forge`.
 
 Repository folders this applies to:
 - UI: [Project/forge](https://github.com/SentinelMurphy/AI-Project-Forge/tree/main/Project_01/forge)
@@ -243,7 +243,7 @@ Make sure your backend is running at http://127.0.0.1:8000 and CORS is configure
 
 1) Update routing to include the new page
 
-Edit `Project_01/forge/src/App.jsx` to add the route (keep your existing routes):
+Edit `Project/forge/src/App.jsx` to add the route (keep your existing routes):
 
 ```jsx
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -267,7 +267,7 @@ export default App;
 
 2) Ensure the API helper exists
 
-File: `Project_01/forge/src/utils/rest.js` (from earlier steps)
+File: `Project/forge/src/utils/rest.js` (from earlier steps)
 ```javascript
 const API_BASE = "http://127.0.0.1:8000";
 
@@ -298,7 +298,7 @@ export default api;
 
 3) Add the new Items page
 
-Create `Project_01/forge/src/pages/Items.jsx`:
+Create `Project/forge/src/pages/Items.jsx`:
 
 ```jsx
 import { useEffect, useState } from "react";
@@ -382,13 +382,13 @@ export default function Items() {
 
 - Start backend:
   ```
-  cd Project_01/backend
+  cd Project/backend
   # activate venv
   uvicorn main:app --reload --port 8000
   ```
 - Start UI:
   ```
-  cd Project_01/forge
+  cd Project/forge
   npm run dev
   ```
 - Open http://localhost:5173/items to see the cards.
