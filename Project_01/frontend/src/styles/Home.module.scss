@@ -1,0 +1,73 @@
+.blobs {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.blob {
+  position: absolute;
+  width: 40vmax;
+  height: 40vmax;
+  filter: blur(60px);
+  opacity: 0.45;
+  mix-blend-mode: screen;
+  transform: translate3d(0, 0, 0);
+  animation: blobMove 18s ease-in-out infinite;
+}
+
+.blob1 {
+  top: -10%;
+  left: -10%;
+  background: radial-gradient(closest-side, #6366f1 0%, transparent 65%);
+  animation-delay: -4s;
+}
+
+.blob2 {
+  bottom: -15%;
+  right: -10%;
+  background: radial-gradient(closest-side, #22d3ee 0%, transparent 65%);
+  animation-delay: -10s;
+}
+
+.blob3 {
+  top: 20%;
+  right: 20%;
+  background: radial-gradient(closest-side, #e879f9 0%, transparent 65%);
+  animation-delay: -1s;
+}
+
+@keyframes blobMove {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  33%  { transform: translate3d(4%, -2%, 0) scale(1.05); }
+  66%  { transform: translate3d(-3%, 3%, 0) scale(0.98); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+
+
+.fadeInUp {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: fadeInUp 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blob {
+    animation: none;
+    opacity: 0.18;
+  }
+  .fadeInUp {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}

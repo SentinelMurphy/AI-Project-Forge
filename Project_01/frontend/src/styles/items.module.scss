@@ -1,0 +1,155 @@
+$page-bg: #0f1226; /* deep navy */
+$text: rgba(255,255,255,0.9);
+$text-dim: rgba(255,255,255,0.7);
+$border: rgba(255,255,255,0.14);
+$card: rgba(255,255,255,0.06);
+$shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 10px 30px rgba(0,0,0,0.35);
+
+$success-bg: rgba(16, 185, 129, 0.15); /* green-500 at low opacity */
+$success-fg: #10b981;
+$danger-bg: rgba(239, 68, 68, 0.15);   /* red-500 at low opacity */
+$danger-fg: #ef4444;
+
+.page {
+  min-height: 100vh;
+  color: $text;
+  background:
+          radial-gradient(800px 400px at 12% 18%, rgba(88, 63, 201, 0.25), transparent 60%),
+          radial-gradient(700px 350px at 88% 82%, rgba(19, 172, 184, 0.18), transparent 60%),
+          $page-bg;
+}
+
+.container {
+  width: min(1100px, 92%);
+  margin-inline: auto;
+  padding: clamp(20px, 4vw, 40px) 0;
+}
+
+.header {
+  margin-bottom: 18px;
+}
+
+.title {
+  font-size: clamp(20px, 2vw, 26px);
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.subtle {
+  margin-top: 4px;
+  color: $text-dim;
+  font-size: 14px;
+}
+
+.error {
+  color: $danger-fg;
+}
+
+.section {
+  margin-top: 22px;
+}
+
+/* Shared card base */
+.cardBase {
+  background: $card;
+  border: 1px solid $border;
+  border-radius: 12px;
+  box-shadow: $shadow;
+  backdrop-filter: blur(6px);
+}
+
+/* Metrics layout */
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 16px;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media (min-width: 960px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.metricCard {
+  @extend .cardBase;
+  padding: 18px 20px;
+}
+
+.metricLabel {
+  color: $text-dim;
+  font-size: 14px;
+}
+
+.metricValue {
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-top: 6px;
+}
+
+/* Items grid */
+.grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media (min-width: 960px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.itemCard {
+  @extend .cardBase;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.itemHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.itemName {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.itemMeta {
+  color: $text-dim;
+  font-size: 14px;
+}
+
+.price {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+/* Badges */
+.badge {
+  border-radius: 8px;
+  font-size: 12px;
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.badgeIn {
+  background: $success-bg;
+  color: $success-fg;
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.badgeOut {
+  background: $danger-bg;
+  color: $danger-fg;
+  border-color: rgba(239, 68, 68, 0.35);
+}
