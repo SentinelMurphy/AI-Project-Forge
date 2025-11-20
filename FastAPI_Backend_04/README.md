@@ -241,62 +241,7 @@ This section adds a new page at `/items` that:
 
 Make sure your backend is running at http://127.0.0.1:8000 and CORS is configured to allow `http://localhost:5173` (and `http://127.0.0.1:5173`).
 
-1) Update routing to include the new page
-
-Edit `Project/frontend/src/App.jsx` to add the route (keep your existing routes):
-
-```jsx
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import About from './pages/About';
-import Items from './pages/Items';
-
-function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/items" element={<Items />} />
-      </Routes>
-    </BrowserRouter>
-  );
-}
-export default App;
-```
-
-2) Ensure the API helper exists
-
-File: `Project/frontend/src/utils/rest.js` (from earlier steps)
-```javascript
-const API_BASE = "http://127.0.0.1:8000";
-
-async function request(path, options = {}) {
-  const url = `${API_BASE}${path}`;
-  const resp = await fetch(url, {
-    headers: {
-      "Content-Type": "application/json",
-      ...(options.headers || {}),
-    },
-    ...options,
-  });
-  if (!resp.ok) {
-    const text = await resp.text();
-    throw new Error(`Request failed (${resp.status}): ${text}`);
-  }
-  return resp.json();
-}
-
-export const api = {
-  health: () => request("/health"),
-  getItems: () => request("/items"),
-  getItem: (id) => request(`/items/${id}`),
-};
-
-export default api;
-```
-
-3) Add the new Items page
+## 1) Add the new Items page
 
 Create `Project/frontend/src/pages/Items.jsx`:
 
@@ -378,7 +323,64 @@ export default function Items() {
 }
 ```
 
-4) Run and view
+## 2) Update routing to include the new page
+
+Edit `Project/frontend/src/App.jsx` to add the route (keep your existing routes):
+
+```jsx
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import About from './pages/About';
+import Items from './pages/Items';
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/items" element={<Items />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+export default App;
+```
+
+## 3) Ensure the API helper exists
+
+File: `Project/frontend/src/utils/rest.js` (from earlier steps)
+```javascript
+const API_BASE = "http://127.0.0.1:8000";
+
+async function request(path, options = {}) {
+  const url = `${API_BASE}${path}`;
+  const resp = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      ...(options.headers || {}),
+    },
+    ...options,
+  });
+  if (!resp.ok) {
+    const text = await resp.text();
+    throw new Error(`Request failed (${resp.status}): ${text}`);
+  }
+  return resp.json();
+}
+
+export const api = {
+  health: () => request("/health"),
+  getItems: () => request("/items"),
+  getItem: (id) => request(`/items/${id}`),
+};
+
+export default api;
+```
+
+
+
+## 4) Run and view
 
 - Start backend:
   ```
@@ -401,7 +403,7 @@ Update `Project/frontend/src/pages/Items.jsx`:
 
 ```jsx
 import { useEffect, useState } from "react";
-import s from "../styles/items.module.scss";
+import style from "../styles/items.module.scss";
 import { api } from "../utils/rest";
 
 export default function Items() {
@@ -425,44 +427,44 @@ export default function Items() {
   }, []);
 
   return (
-    <div className={s.page}>
-      <div className={s.container}>
-        <header className={s.header}>
-          <h1 className={s.title}>Items (FastAPI)</h1>
-          <p className={s.subtle}>
-            Status: {status} {error && <span className={s.error}>— {error}</span>}
+    <div className={style.page}>
+      <div className={style.container}>
+        <header className={style.header}>
+          <h1 className={style.title}>Items (FastAPI)</h1>
+          <p className={style.subtle}>
+            Status: {status} {error && <span className={style.error}>— {error}</span>}
           </p>
         </header>
 
         {/* Summary metric */}
-        <section className={s.section}>
-          <div className={s.metricsGrid}>
-            <div className={s.metricCard}>
-              <p className={s.metricLabel}>Total Items</p>
-              <p className={s.metricValue}>{count}</p>
+        <section className={style.section}>
+          <div className={style.metricsGrid}>
+            <div className={style.metricCard}>
+              <p className={style.metricLabel}>Total Items</p>
+              <p className={style.metricValue}>{count}</p>
             </div>
           </div>
         </section>
 
         {/* Item cards */}
-        <section className={s.section}>
-          <div className={s.grid}>
-            {items.map((i) => (
-              <div key={i.id} className={s.itemCard}>
-                <div className={s.itemHeader}>
-                  <h2 className={s.itemName}>{i.name}</h2>
-                  <span className={`${s.badge} ${i.in_stock ? s.badgeIn : s.badgeOut}`}>
-                    {i.in_stock ? "In Stock" : "Out of Stock"}
+        <section className={style.section}>
+          <div className={style.grid}>
+            {items.map((item) => (
+              <div key={item.id} className={style.itemCard}>
+                <div className={style.itemHeader}>
+                  <h2 className={style.itemName}>{item.name}</h2>
+                  <span className={`${style.badge} ${item.in_stock ? style.badgeIn : style.badgeOut}`}>
+                    {item.in_stock ? "In Stock" : "Out of Stock"}
                   </span>
                 </div>
-                <div className={s.itemMeta}>ID: {i.id}</div>
-                <div className={s.price}>${i.price}</div>
+                <div className={style.itemMeta}>ID: {item.id}</div>
+                <div className={style.price}>${item.price}</div>
               </div>
             ))}
           </div>
 
           {items.length === 0 && !error && (
-            <p className={s.subtle}>No items to display.</p>
+            <p className={style.subtle}>No items to display.</p>
           )}
         </section>
       </div>

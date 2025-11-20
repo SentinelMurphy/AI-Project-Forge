@@ -1,0 +1,48 @@
+# Python caches and compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+env.bak/
+
+# Environment / secrets
+.env
+.env.*     # e.g., .env.local
+secrets.yaml
+
+# Build / package metadata
+pip-wheel-metadata/
+*.egg-info/
+dist/
+build/
+
+# Mypy / pytest
+.mypy_cache/
+.pytest_cache/
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and databases
+*.log
+*.sqlite3
+*.db
+
+# Coverage
+.coverage
+htmlcov/
+
+# Editor swap/temp files
+*~
+*.swp

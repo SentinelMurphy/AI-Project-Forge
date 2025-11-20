@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../styles/Home.module.scss";
+import styles from "../styles/home.module.scss";
 
 const Feature = ({ icon, title, children, delay = 0 }) => (
   <div
