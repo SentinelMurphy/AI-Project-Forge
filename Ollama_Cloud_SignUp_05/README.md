@@ -163,19 +163,13 @@ ollama list
 ```
 For Cloud-specific models you may still need explicit API key export; the interactive login may not automatically populate `OLLAMA_API_KEY` for your Python process. If `ollama list` only shows local models, proceed to API key step.
 
-## 16.4 Generate / Retrieve API Key (Portal Method)
 
-1. Visit the Ollama Cloud portal (account dashboard).
-2. Navigate to "API Keys".
-3. Create a new key (copy it immediately).
-4. Store securely (password manager or local encrypted vault).
-
-## 16.5 Environment Setup (.env)
+## 6 ) Environment Setup (.env)
 
 Create or edit `Project_01/backend/.env`:
 ```
 OLLAMA_HOST=https://api.ollama.ai
-OLLAMA_API_KEY=ollama_sk_live_XXXXXXXXXXXXXXXX
+OLLAMA_API_KEY=4443EXAMPLEPASTEINYOUROWN538129
 OLLAMA_MODEL=deepseek-v3.1:671b-cloud
 ```
 
@@ -183,49 +177,6 @@ Why `localhost` for backend host and cloud host separately:
 - Backend listens at `http://localhost:8000`.
 - Cloud endpoint remains `https://api.ollama.ai` (do NOT change to localhost).
 
-## 16.6 Switching to deepseek-v3.1:671b-cloud
-
-Update any prior `OLLAMA_MODEL` references:
-```
-OLLAMA_MODEL=deepseek-v3.1:671b-cloud
-```
-If using the REST fallback client (`ai_client_cloud.py`), no additional change required beyond `.env`.
-
-Model availability:
-- Ensure your account/plan grants access to extremely large context / high parameter models like `deepseek-v3.1:671b-cloud`. If you receive 404 or permission errors, downgrade to a smaller supported model (e.g. `llama3.1:8b`).
-- Large model responses can be slower and more costly—enable streaming endpoints to improve UX.
-
-## 16.7 Test Calls
-
-### Curl (Generate)
-```
-curl -X POST http://localhost:8000/ai/generate \
-  -H "Content-Type: application/json" \
-  -d '{"prompt":"Explain tail recursion briefly."}'
-```
-
-### Curl (Chat)
-```
-curl -X POST http://localhost:8000/ai/chat \
-  -H "Content-Type: application/json" \
-  -d '{"messages":[{"role":"user","content":"List three advantages of FastAPI."}]}'
-```
-
-### Curl (Streaming)
-```
-curl -N -X POST http://localhost:8000/ai/stream \
-  -H "Content-Type: application/json" \
-  -d '{"prompt":"Stream a short description of Python generators."}'
-```
-
-# 4) Backend Environment Variables
-
-Create a `.env` file (NOT committed) in `Project/backend/`:
-```
-OLLAMA_HOST=https://api.ollama.ai
-OLLAMA_API_KEY=33b148ba9ae84examplekey179655
-OLLAMA_MODEL=qwen3-coder:480b-cloud
-```
 
 Load it in FastAPI using `python-dotenv`.
 
@@ -237,7 +188,7 @@ pip install ollama python-dotenv
 ```
 
 
-# 5) Create an Ollama Client Module
+# 7 ) Create an Ollama Client Module
 
 File: `Project/backend/ai_client.py`
 ```python
@@ -299,7 +250,7 @@ def stream_chat(messages: List[Dict[str, str]], model: Optional[str] = None) -> 
             break
 ```
 
-## 6) Add Router Streaming & Non-Streaming to `router.py`
+## 8 ) Add Router Streaming & Non-Streaming to `router.py`
 
 Add File: `Project/backend/router.py`
 
@@ -376,7 +327,7 @@ def register_routes(app: FastAPI):
 ```
 
 
-## 7) Add AI Endpoints to `main.py`
+## 9 ) Add AI Endpoints to `main.py`
 
 Edit `Project/backend/main.py` (append near bottom):
 
@@ -471,6 +422,31 @@ Check endpoints:
 - POST http://127.0.0.1:8000/ai/generate  body: {"prompt": "Hello AI!"}
 - POST http://127.0.0.1:8000/ai/chat      body: {"messages":[{"role":"user","content":"Explain FastAPI briefly."}]}
 
+
+## 10 ) Test Calls
+
+### Curl (Generate)
+```
+curl -X POST http://localhost:8000/ai/generate \
+  -H "Content-Type: application/json" \
+  -d '{"prompt":"Explain tail recursion briefly."}'
+```
+
+### Curl (Chat)
+```
+curl -X POST http://localhost:8000/ai/chat \
+  -H "Content-Type: application/json" \
+  -d '{"messages":[{"role":"user","content":"List three advantages of FastAPI."}]}'
+```
+
+### Curl (Streaming)
+```
+curl -N -X POST http://localhost:8000/ai/stream \
+  -H "Content-Type: application/json" \
+  -d '{"prompt":"Stream a short description of Python generators."}'
+```
+
+
 ---
 
 # Wait for a fix to 502 BAD Gateway.......
@@ -478,11 +454,11 @@ Check endpoints:
 ---
 
 
-## 8) Update Frontend API Helper
+## 11 ) Update Frontend API Helper
 
 (Already shown earlier in `rest.js`.)
 
-## 9) Create a Simple AI Playground Page
+## 12 ) Create a Simple AI Playground Page
 
 File: `Project_01/forge/src/pages/AiPlayground.jsx`
 
@@ -571,7 +547,7 @@ export default function AiPlayground() {
 }
 ```
 
-## 10) Create a Simple AI Playground Style
+## 13 ) Create a Simple AI Playground Style
 
 File: `Project/frontend/src/styles/aiPlayground.module.scss`
 
@@ -733,7 +709,7 @@ $accent-2: #06b6d4;
 ```
 
 
-## 11) Add Route
+## 14 ) Add Route
 
 Edit `Project/frontend/src/App.jsx`:
 ```jsx
