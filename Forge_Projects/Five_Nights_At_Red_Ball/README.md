@@ -48,3 +48,5 @@ Follow these steps to get the game running on your local machine:
 - Every 20 seconds, a new red ball will be added to the maze
 - Find the exit before the red balls catch you!
 - The game ends when you either escape or get caught by a red ball
+
+![2026-02-03_16-49.png](doc_images/2026-02-03_16-49.png)
