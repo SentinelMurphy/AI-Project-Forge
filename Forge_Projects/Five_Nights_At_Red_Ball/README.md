@@ -25,18 +25,22 @@ Follow these steps to get the game running on your local machine:
    ```bash
    cd Five_Nights_At_Red_Ball
    ```
+3**Install Dependencies**
+   ```bash
+   npm install
+   ```
 
-3. **Install Dependencies and Build the Game**
+4**Install Dependencies and Build the Game**
    ```bash
    npm run build
    ```
 
-4. **Start the Development Server**
+5**Start the Development Server**
    ```bash
    npm run dev
    ```
 
-5. **Open Your Browser**
+6**Open Your Browser**
     - Once the server is running, open your web browser
     - Navigate to: `http://localhost:5173/`
     - Click "New Game" to begin your survival challenge
