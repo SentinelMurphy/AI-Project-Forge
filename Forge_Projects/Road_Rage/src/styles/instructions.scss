@@ -1,0 +1,156 @@
+@use 'variables' as *;
+
+.ins-page {
+  width: 100vw;
+  height: 100vh;
+  background: $bg-deep;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-pixel;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 2px,
+      rgba(0,0,0,0.05) 2px, rgba(0,0,0,0.05) 4px
+    );
+    pointer-events: none;
+    z-index: 100;
+  }
+}
+
+.ins-panel {
+  position: relative;
+  width: 360px;
+  background: rgba(0,0,0,0.6);
+  border: 3px solid #2a2a2a;
+  border-top: 3px solid #444;
+  padding: 28px 24px 24px;
+  box-shadow: 0 0 40px rgba(224,28,28,0.15);
+
+  .ins-back {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    font-family: $font-pixel;
+    font-size: 8px;
+    color: #777;
+    background: none;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 1px;
+    padding: 4px 6px;
+    transition: color 0.15s;
+
+    &:hover { color: $white; }
+    &::before { content: '< '; }
+  }
+
+  .ins-title {
+    font-size: 14px;
+    color: $red-bright;
+    text-align: center;
+    letter-spacing: 3px;
+    text-shadow: 3px 3px 0 #000;
+    margin-bottom: 22px;
+  }
+
+  .ins-section {
+    margin-bottom: 20px;
+
+    h3 {
+      font-size: 8px;
+      color: $gold;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #2a2a2a;
+    }
+  }
+
+  .ins-keys {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .key-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .key-combo {
+        display: flex;
+        gap: 5px;
+        flex-shrink: 0;
+        width: 100px;
+      }
+
+      .key {
+        font-family: $font-pixel;
+        font-size: 8px;
+        color: $white;
+        background: #2a2a2a;
+        border: 2px solid #555;
+        border-bottom-color: #222;
+        padding: 4px 6px;
+        min-width: 24px;
+        text-align: center;
+        box-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+      }
+
+      .key-label {
+        font-size: 7px;
+        color: #aaa;
+        line-height: 1.6;
+      }
+    }
+  }
+
+  .ins-tips {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .tip {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+
+      .tip-icon {
+        font-size: 14px;
+        line-height: 1;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+
+      .tip-text {
+        font-size: 7px;
+        color: #999;
+        line-height: 2;
+      }
+    }
+  }
+
+  .ins-enemies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    .enemy-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: calc(50% - 5px);
+
+      .enemy-name {
+        font-size: 6px;
+        color: #888;
+        line-height: 1.6;
+      }
+    }
+  }
+}

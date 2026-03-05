@@ -1,0 +1,37 @@
+// ── Palette ──────────────────────────────────────────────────────────────────
+$bg-deep:        #07070f;
+$bg-dark:        #0d0d1a;
+$road-color:     #1a1a1a;
+$road-alt:       #222222;
+$sidewalk:       #2d2418;
+$sidewalk-light: #3a3020;
+$line-yellow:    #f0b800;
+$line-white:     #d0d0d0;
+$red-primary:    #e01c1c;
+$red-bright:     #ff2a2a;
+$red-dark:       #9a0000;
+$gold:           #ffd700;
+$gold-dark:      #c8a800;
+$white:          #ffffff;
+$grey-mid:       #888888;
+$grey-dark:      #333333;
+
+// ── Typography ────────────────────────────────────────────────────────────────
+$font-pixel: 'Press Start 2P', monospace;
+$font-body:  'Press Start 2P', monospace;
+
+// ── Game Dimensions ───────────────────────────────────────────────────────────
+$game-w:   360px;
+$game-h:   640px;
+$road-x:   60px;
+$road-w:   240px;
+$lane-w:   80px;
+
+// ── Transitions ───────────────────────────────────────────────────────────────
+$transition-fast:   0.15s ease;
+$transition-normal: 0.25s ease;
+
+// ── Shadows / Glows ───────────────────────────────────────────────────────────
+$glow-red:    0 0 20px rgba(224, 28, 28, 0.8), 0 0 60px rgba(224, 28, 28, 0.4);
+$glow-gold:   0 0 20px rgba(255, 215, 0, 0.8),  0 0 60px rgba(255, 215, 0, 0.3);
+$shadow-text: 4px 4px 0 #000, 6px 6px 0 rgba(0,0,0,0.5);

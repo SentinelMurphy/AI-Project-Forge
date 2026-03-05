@@ -1,5 +1,96 @@
+# Coffee Machine UI — Auth + Backend Integration Guide
+
+**CoffeeMachineUpORDown** React UI to use the **Shared Forge FastAPI Backend** for login/signup/authentication using **JWT + refresh tokens + cookies**.
+
+---
+
+## ✅ Backend Assumptions
+
+Backend is running at:
+
+```
+http://localhost:8000
+```
+
+Auth endpoints:
+
+- `POST /auth/signup`
+- `POST /auth/login`
+- `POST /auth/refresh`
+- `GET /users/me` (protected, uses JWT)
+
+---
+
+# 🔧 Frontend Setup
+
+## 1) Add API helper
+
+Create a small API helper so your UI can call the backend.
+
+**Create File:**  
+`/CoffeeMachineUpORDown/src/app/utils/api.ts`
+
+```ts
+const API_BASE = "http://localhost:8000";
+
+export async function signup(email: string, password: string) {
+  const res = await fetch(`${API_BASE}/auth/signup`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include", // allow cookies
+    body: JSON.stringify({ email, password }),
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+export async function login(email: string, password: string) {
+  const res = await fetch(`${API_BASE}/auth/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ email, password }),
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+export async function refresh(refresh_token: string) {
+  const res = await fetch(`${API_BASE}/auth/refresh`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ refresh_token }),
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+export async function getMe(token: string) {
+  const res = await fetch(`${API_BASE}/users/me`, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
+    credentials: "include",
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+```
+
+---
+
+# ✅ Update LoginSignup Flow
+
+Replace the **fake login/signup flow** with real API calls.
+
+### File:
+`/CoffeeMachineUpORDown/src/app/components/LoginSignup.tsx`
+
+```tsx
+
 import { useState } from 'react';
 import { X, Mail, Lock, User } from 'lucide-react';
+import { login, signup, getMe } from '@/app/utils/api';
 
 interface LoginSignupProps {
     isOpen: boolean;
@@ -16,7 +107,8 @@ export function LoginSignup({ isOpen, onClose, onAuthenticate }: LoginSignupProp
         confirmPassword: '',
     });
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
+    const [apiError, setApiError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
 
     if (!isOpen) return null;
 
@@ -50,14 +142,27 @@ export function LoginSignup({ isOpen, onClose, onAuthenticate }: LoginSignupProp
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setApiError(null);
 
-        if (validateForm()) {
-            // Simulate successful authentication
+        if (!validateForm()) return;
+
+        try {
+            setLoading(true);
+
+            if (!isLogin) {
+                await signup(formData.email, formData.password);
+            }
+
+            const { access_token } = await login(formData.email, formData.password);
+            localStorage.setItem('access_token', access_token);
+
+            const me = await getMe(access_token);
+
             onAuthenticate({
-                name: formData.name || formData.email.split('@')[0],
-                email: formData.email,
+                name: me.email || formData.name || formData.email.split('@')[0],
+                email: me.email || formData.email,
             });
 
             // Reset form
@@ -69,6 +174,10 @@ export function LoginSignup({ isOpen, onClose, onAuthenticate }: LoginSignupProp
             });
             setErrors({});
             onClose();
+        } catch (err: any) {
+            setApiError(err?.message || 'Login failed');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -77,7 +186,6 @@ export function LoginSignup({ isOpen, onClose, onAuthenticate }: LoginSignupProp
             ...formData,
             [e.target.name]: e.target.value,
         });
-        // Clear error for this field when user starts typing
         if (errors[e.target.name]) {
             setErrors({
                 ...errors,
@@ -89,6 +197,7 @@ export function LoginSignup({ isOpen, onClose, onAuthenticate }: LoginSignupProp
     const toggleMode = () => {
         setIsLogin(!isLogin);
         setErrors({});
+        setApiError(null);
     };
 
     return (
@@ -212,11 +321,16 @@ export function LoginSignup({ isOpen, onClose, onAuthenticate }: LoginSignupProp
                         </div>
                     )}
 
+                    {apiError && (
+                        <p className="text-red-600 text-sm">{apiError}</p>
+                    )}
+
                     <button
                         type="submit"
-                        className="w-full bg-[#EE0000] text-white py-3 rounded-lg hover:bg-[#CC0000] transition-colors"
+                        disabled={loading}
+                        className="w-full bg-[#EE0000] text-white py-3 rounded-lg hover:bg-[#CC0000] transition-colors disabled:opacity-60"
                     >
-                        {isLogin ? 'Sign In' : 'Sign Up'}
+                        {loading ? 'Please wait...' : isLogin ? 'Sign In' : 'Sign Up'}
                     </button>
 
                     <div className="text-center">
@@ -235,3 +349,106 @@ export function LoginSignup({ isOpen, onClose, onAuthenticate }: LoginSignupProp
         </div>
     );
 }
+
+
+```
+
+✅ When user submits login:
+
+
+#### const { access_token } = await login(email, password);
+#### // store token (localStorage or state)
+#### localStorage.setItem("access_token", access_token);
+#### const me = await getMe(access_token);
+#### onAuthenticate({ name: me.email, email: me.email });
+
+
+✅ When user submits signup:
+
+### await signup(email, password);
+### const { access_token } = await login(email, password);
+### localStorage.setItem("access_token", access_token);
+### const me = await getMe(access_token);
+### onAuthenticate({ name: me.email, email: me.email });
+
+
+---
+
+# ✅ Keep User Logged In on Refresh
+
+Add this to `App.tsx`:
+
+Add at the top of `App.tsx`
+```tsx
+import { useState, useEffect } from 'react';
+import { getMe } from "@/app/utils/api";
+```
+
+Add code to line : 26
+```ts
+useEffect(() => {
+  const token = localStorage.getItem("access_token");
+  if (!token) return;
+
+  getMe(token)
+    .then((me) => {
+      setUser({ name: me.email, email: me.email });
+      setIsAuthenticated(true);
+    })
+    .catch(() => {
+      setUser(null);
+      setIsAuthenticated(false);
+    });
+}, []);
+```
+
+---
+
+# ✅ Logout Flow
+
+Update logout to clear token:
+
+```ts
+const handleLogout = () => {
+  localStorage.removeItem("access_token");
+  setUser(null);
+  setIsAuthenticated(false);
+};
+```
+
+---
+
+# ✅ CORS + Cookies
+
+Backend already supports:
+
+```
+CORS_ORIGINS=http://localhost:3000,http://localhost:5173,http://localhost:8080
+```
+
+And cookies are allowed via:
+
+```ts
+credentials: "include"
+```
+
+---
+
+# ✅ File Summary
+
+```
+/CoffeeMachineUpORDown/
+└── src/
+    └── app/
+        ├── App.tsx              (updated for token persistence)
+        ├── utils/
+        │   └── api.ts           (NEW: API helper)
+        └── components/
+            ├── LoginSignup.tsx  (updated to call API)
+            ├── Header.tsx
+            ├── Dashboard.tsx
+            ├── RepairsPage.tsx
+            └── StatusPage.tsx
+```
+
+---

@@ -1,0 +1,279 @@
+@use 'variables' as *;
+
+// ── Keyframes ─────────────────────────────────────────────────────────────────
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.2; }
+  50%       { opacity: 1;   }
+}
+
+@keyframes road-scroll {
+  from { background-position-y: 0; }
+  to   { background-position-y: 80px; }
+}
+
+@keyframes title-pulse {
+  0%, 100% { text-shadow: 4px 4px 0 #000, 0 0 30px #e01c1c, 0 0 60px rgba(224,28,28,0.4); }
+  50%       { text-shadow: 4px 4px 0 #000, 0 0 50px #ff2a2a, 0 0 100px rgba(255,42,42,0.6); }
+}
+
+@keyframes car-float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+@keyframes scanlines {
+  0%   { background-position: 0 0; }
+  100% { background-position: 0 4px; }
+}
+
+@keyframes btn-flicker {
+  0%, 95%, 100% { opacity: 1; }
+  96%, 98%      { opacity: 0.85; }
+}
+
+// ── Layout ────────────────────────────────────────────────────────────────────
+.landing-page {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: $bg-deep;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-pixel;
+
+  // CRT scanlines overlay
+  &::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.06) 2px,
+      rgba(0, 0, 0, 0.06) 4px
+    );
+    pointer-events: none;
+    z-index: 100;
+    animation: scanlines 0.1s linear infinite;
+  }
+}
+
+// ── Stars ─────────────────────────────────────────────────────────────────────
+.stars-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+
+  .star {
+    position: absolute;
+    border-radius: 50%;
+    background: #fff;
+    animation: star-twinkle linear infinite;
+  }
+}
+
+// ── Road background strip ─────────────────────────────────────────────────────
+.landing-road-bg {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: $road-w;
+  background: $road-color;
+  z-index: 1;
+  overflow: hidden;
+
+  // Yellow edge lines
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: $line-yellow;
+  }
+  &::before { left: 0; }
+  &::after  { right: 0; }
+
+  // Dashed lane lines (scrolling)
+  .landing-dash {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      $line-white 0px,
+      $line-white 40px,
+      transparent 40px,
+      transparent 80px
+    );
+    animation: road-scroll 0.5s linear infinite;
+
+    &.d1 { left: 80px; }
+    &.d2 { left: 160px; }
+  }
+}
+
+// ── Left / Right sidewalks ────────────────────────────────────────────────────
+.landing-sidewalk {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: calc(50% - 120px); // (viewport - 240px road) / 2
+  background: $sidewalk;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 39px,
+    rgba(0, 0, 0, 0.25) 39px,
+    rgba(0, 0, 0, 0.25) 40px
+  );
+  z-index: 1;
+
+  &.left  { left: 0; }
+  &.right { right: 0; }
+}
+
+// ── Content wrapper ───────────────────────────────────────────────────────────
+.landing-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+// ── Title ─────────────────────────────────────────────────────────────────────
+.landing-title {
+  text-align: center;
+  margin-bottom: 8px;
+
+  .title-line-1,
+  .title-line-2 {
+    display: block;
+    font-family: $font-pixel;
+    color: $red-bright;
+    letter-spacing: 4px;
+    animation: title-pulse 2s ease-in-out infinite;
+    text-shadow: 4px 4px 0 #000, 0 0 30px $red-primary, 0 0 60px rgba(224,28,28,0.4);
+  }
+
+  .title-line-1 { font-size: 44px; line-height: 1; }
+  .title-line-2 { font-size: 44px; line-height: 1.2; }
+
+  .title-tagline {
+    display: block;
+    font-family: $font-pixel;
+    font-size: 8px;
+    color: $gold;
+    letter-spacing: 6px;
+    margin-top: 10px;
+    text-shadow: 2px 2px 0 #000;
+    opacity: 0.9;
+  }
+}
+
+// ── Hero car ──────────────────────────────────────────────────────────────────
+.landing-car {
+  margin: 16px 0 20px;
+  animation: car-float 2.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 22px rgba(220, 30, 30, 0.95))
+          drop-shadow(0 0 48px rgba(220, 30, 30, 0.5));
+
+  img {
+    display: block;
+    width: 130px;
+    height: 210px;
+    object-fit: contain;
+    transform: rotate(180deg);
+    transform-origin: center center;
+    user-select: none;
+    pointer-events: none;
+  }
+}
+
+// ── Menu buttons ─────────────────────────────────────────────────────────────
+.landing-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 280px;
+}
+
+.menu-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px 20px;
+  font-family: $font-pixel;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: $white;
+  background: $red-dark;
+  border: 3px solid $red-primary;
+  border-bottom-color: #5a0000;
+  border-right-color: #5a0000;
+  cursor: pointer;
+  transition: transform $transition-fast, background $transition-fast, box-shadow $transition-fast;
+  text-transform: uppercase;
+  position: relative;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.6);
+  animation: btn-flicker 8s linear infinite;
+
+  &:hover {
+    background: $red-primary;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.6), 0 0 20px rgba(224,28,28,0.5);
+  }
+
+  &:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.6);
+  }
+
+  &.secondary {
+    font-size: 9px;
+    padding: 10px 16px;
+    background: $grey-dark;
+    border-color: #555;
+    border-bottom-color: #111;
+    border-right-color: #111;
+
+    &:hover {
+      background: #555;
+      box-shadow: 6px 6px 0 rgba(0,0,0,0.6), 0 0 20px rgba(255,255,255,0.1);
+    }
+  }
+
+  .btn-icon {
+    font-size: 14px;
+    line-height: 1;
+  }
+}
+
+// ── Footer version ────────────────────────────────────────────────────────────
+.landing-footer {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: $font-pixel;
+  font-size: 6px;
+  color: #444;
+  letter-spacing: 2px;
+  z-index: 10;
+  white-space: nowrap;
+}
