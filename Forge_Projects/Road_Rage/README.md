@@ -49,6 +49,8 @@ A pixel-art / retro arcade racing game built with **React**, **TypeScript**, and
 │   ├── app/
 │   │   ├── App.tsx                     # Root component — mounts RouterProvider
 │   │   ├── routes.ts                   # All client-side routes
+│   │   ├── assets/
+│   │   │   ├── player_car.png          # Players Image Car
 │   │   ├── pages/
 │   │   │   ├── Landing.tsx             # Home / menu screen
 │   │   │   ├── Game.tsx                # Main game loop + rendering
@@ -392,16 +394,22 @@ To reset all scores: open the **High Scores** page and click **CLEAR SCORES**.
 
 ## How to Run Locally
 
-```bash
-# Install dependencies
-npm install
 
-# Start dev server
-npm dev
+2. **Install Dependencies**
+   ```bash
+   npm install
+   ```
 
-# Build for production
-npm build
-```
+3. **Build the Application**
+   ```bash
+   npm run build
+   ```
+
+4. **Start the Development Server**
+   ```bash
+   npm run dev
+   ```
+
 
 The dev server opens at `http://localhost:5173` by default (Vite). No environment variables or backend required — the game is entirely client-side.
 
