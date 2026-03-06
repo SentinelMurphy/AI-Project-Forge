@@ -171,10 +171,24 @@ Add classes in `app/db/models.py`.
 
 ---
 
-# 🚀 Run It
+# Run the Backend 
 
+### Start the AI Engine Backend 
 ```bash
 docker compose up --build
+```
+
+### Shutdown the AI Engine Backend
+```bash
+docker compose down -v
+```
+### Build the AI Engine Backend
+```bash
+docker compose build --no-cache
+```
+### Update the AI Engine Backend with code changes
+```bash
+docker compose up
 ```
 
 Backend will be available at:
