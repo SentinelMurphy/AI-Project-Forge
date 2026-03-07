@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Header } from '@/app/components/Header';
-import { Dashboard } from '@/app/components/Dashboard';
-import { RepairsPage } from '@/app/components/RepairsPage';
-import { StatusPage } from '@/app/components/StatusPage';
-import { LoginSignup } from '@/app/components/LoginSignup';
+import { Header } from './components/Header';
+import { Dashboard } from './components/Dashboard';
+import { RepairsPage } from './components/RepairsPage';
+import { StatusPage } from './components/StatusPage';
+import { LoginSignup } from './components/LoginSignup';
+import { getMe } from './utils/api';
 
 
 export default function App() {
@@ -18,9 +19,25 @@ export default function App() {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem("access_token");
     setUser(null);
     setIsAuthenticated(false);
   };
+
+  useEffect(() => {
+  const token = localStorage.getItem("access_token");
+  if (!token) return;
+
+  getMe(token)
+    .then((me) => {
+      setUser({ name: me.email, email: me.email });
+      setIsAuthenticated(true);
+    })
+    .catch(() => {
+      setUser(null);
+      setIsAuthenticated(false);
+    });
+}, []);
 
   const renderPage = () => {
     switch (currentPage) {

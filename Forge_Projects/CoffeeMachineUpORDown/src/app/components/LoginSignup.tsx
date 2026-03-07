@@ -1,5 +1,7 @@
+
 import { useState } from 'react';
 import { X, Mail, Lock, User } from 'lucide-react';
+import { login, signup, getMe } from '../utils/api';
 
 interface LoginSignupProps {
     isOpen: boolean;
@@ -16,7 +18,8 @@ export function LoginSignup({ isOpen, onClose, onAuthenticate }: LoginSignupProp
         confirmPassword: '',
     });
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
+    const [apiError, setApiError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
 
     if (!isOpen) return null;
 
@@ -50,14 +53,27 @@ export function LoginSignup({ isOpen, onClose, onAuthenticate }: LoginSignupProp
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setApiError(null);
 
-        if (validateForm()) {
-            // Simulate successful authentication
+        if (!validateForm()) return;
+
+        try {
+            setLoading(true);
+
+            if (!isLogin) {
+                await signup(formData.email, formData.password);
+            }
+
+            const { access_token } = await login(formData.email, formData.password);
+            localStorage.setItem('access_token', access_token);
+
+            const me = await getMe(access_token);
+
             onAuthenticate({
-                name: formData.name || formData.email.split('@')[0],
-                email: formData.email,
+                name: me.email || formData.name || formData.email.split('@')[0],
+                email: me.email || formData.email,
             });
 
             // Reset form
@@ -69,6 +85,10 @@ export function LoginSignup({ isOpen, onClose, onAuthenticate }: LoginSignupProp
             });
             setErrors({});
             onClose();
+        } catch (err: any) {
+            setApiError(err?.message || 'Login failed');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -77,7 +97,6 @@ export function LoginSignup({ isOpen, onClose, onAuthenticate }: LoginSignupProp
             ...formData,
             [e.target.name]: e.target.value,
         });
-        // Clear error for this field when user starts typing
         if (errors[e.target.name]) {
             setErrors({
                 ...errors,
@@ -89,6 +108,7 @@ export function LoginSignup({ isOpen, onClose, onAuthenticate }: LoginSignupProp
     const toggleMode = () => {
         setIsLogin(!isLogin);
         setErrors({});
+        setApiError(null);
     };
 
     return (
@@ -212,11 +232,16 @@ export function LoginSignup({ isOpen, onClose, onAuthenticate }: LoginSignupProp
                         </div>
                     )}
 
+                    {apiError && (
+                        <p className="text-red-600 text-sm">{apiError}</p>
+                    )}
+
                     <button
                         type="submit"
-                        className="w-full bg-[#EE0000] text-white py-3 rounded-lg hover:bg-[#CC0000] transition-colors"
+                        disabled={loading}
+                        className="w-full bg-[#EE0000] text-white py-3 rounded-lg hover:bg-[#CC0000] transition-colors disabled:opacity-60"
                     >
-                        {isLogin ? 'Sign In' : 'Sign Up'}
+                        {loading ? 'Please wait...' : isLogin ? 'Sign In' : 'Sign Up'}
                     </button>
 
                     <div className="text-center">
@@ -235,3 +260,4 @@ export function LoginSignup({ isOpen, onClose, onAuthenticate }: LoginSignupProp
         </div>
     );
 }
+
