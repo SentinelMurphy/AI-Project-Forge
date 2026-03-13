@@ -1,0 +1,46 @@
+.tab-navigation {
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+
+  .tabs {
+    display: flex;
+    gap: 0.25rem;
+
+    .tab {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      border-bottom: 2px solid transparent;
+      background: none;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+
+      &.active {
+        border-bottom-color: #2563eb;
+        color: #2563eb;
+      }
+
+      &:not(.active) {
+        color: #6b7280;
+
+        &:hover {
+          color: #111827;
+        }
+      }
+
+      svg {
+        width: 1rem;
+        height: 1rem;
+      }
+
+      .badge {
+        background-color: #ef4444;
+        color: white;
+        font-size: 0.75rem;
+        padding: 0.125rem 0.5rem;
+        border-radius: 9999px;
+      }
+    }
+  }
+}

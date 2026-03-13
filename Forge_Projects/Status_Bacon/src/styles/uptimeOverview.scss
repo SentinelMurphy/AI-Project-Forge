@@ -1,0 +1,108 @@
+.uptime-overview {
+  background-color: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .uptime-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.25rem;
+    height: 8rem;
+
+    .uptime-bar {
+      flex: 1;
+      position: relative;
+
+      .bar {
+        border-radius: 0.25rem 0.25rem 0 0;
+        transition: opacity 0.2s;
+
+        &.green {
+          background-color: #10b981;
+        }
+
+        &.yellow {
+          background-color: #f59e0b;
+        }
+
+        &.red {
+          background-color: #ef4444;
+        }
+      }
+
+      &:hover .bar {
+        opacity: 0.8;
+      }
+
+      .tooltip {
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-bottom: 0.5rem;
+        padding: 0.25rem 0.5rem;
+        background-color: #111827;
+        color: white;
+        font-size: 0.75rem;
+        border-radius: 0.25rem;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+
+      &:hover .tooltip {
+        opacity: 1;
+      }
+    }
+  }
+
+  .chart-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+
+  .legend {
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      .legend-color {
+        width: 0.75rem;
+        height: 0.75rem;
+        border-radius: 0.125rem;
+
+        &.green {
+          background-color: #10b981;
+        }
+
+        &.yellow {
+          background-color: #f59e0b;
+        }
+
+        &.red {
+          background-color: #ef4444;
+        }
+      }
+
+      span {
+        font-size: 0.875rem;
+        color: #6b7280;
+      }
+    }
+  }
+}

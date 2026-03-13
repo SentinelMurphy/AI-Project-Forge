@@ -1,0 +1,75 @@
+.stats-overview {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .stat-card {
+    background-color: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    border: 1px solid #e5e7eb;
+
+    .stat-content {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+
+      .stat-icon {
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+
+        &.gray {
+          background-color: #f3f4f6;
+          color: #374151;
+        }
+
+        &.green {
+          background-color: #d1fae5;
+          color: #047857;
+        }
+
+        &.blue {
+          background-color: #dbeafe;
+          color: #1d4ed8;
+        }
+
+        &.yellow {
+          background-color: #fef3c7;
+          color: #b45309;
+        }
+
+        svg {
+          width: 1.5rem;
+          height: 1.5rem;
+        }
+      }
+
+      .stat-info {
+        .stat-value {
+          font-size: 1.875rem;
+          margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+          color: #6b7280;
+          font-size: 0.875rem;
+        }
+      }
+    }
+  }
+
+  .loading {
+    margin-bottom: 2rem;
+    text-align: center;
+    color: #6b7280;
+  }
+}
