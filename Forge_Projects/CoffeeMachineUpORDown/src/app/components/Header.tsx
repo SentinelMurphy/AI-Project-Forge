@@ -55,7 +55,7 @@ export function Header({
                   : `${isAuthenticated ? 'hover:bg-[#0052A3]' : 'hover:bg-[#CC0000]'}`
             }`}
           >
-              status of machine
+              status of machine mariana
             </button>
           </nav>
         
