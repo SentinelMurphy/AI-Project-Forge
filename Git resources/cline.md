@@ -168,7 +168,7 @@ Cline provides quick commands you can access:
   "documentation": "Generate comprehensive documentation including parameters, return values, and examples.",
   "test-generation": "Create unit tests covering edge cases and error conditions."
 }
-````
+```
 
 ## Troubleshooting
 
