@@ -2,6 +2,22 @@
 
 This guide outlines the essential daily workflow for managing changes using the built-in Git tools in Visual Studio Code, focusing on pulling updates and creating clean Pull Requests (PRs).
 
+## 🔑 Requesting Repository Access
+
+Before you can pull code or push changes, you must have the appropriate permissions for the repository.
+
+### How to Request Access
+1. **Identify the Project Owner:** The project's primary maintainer.
+2. **Provide Your Credentials:** Send them your GitHub username or the email address associated with your account.
+3. **Specify Access Level:** If you are unsure, request "Write" access (this allows you to push your feature branches and create Pull Requests).
+
+### Verifying Access
+Once you've been granted access:
+1. Navigate to the repository URL in your browser.
+2. If you can see the code and have a "Clone" button available, you are ready to proceed to the **Starting Your Day** section.
+
+---
+
 ## 🌅 Starting Your Day: Pulling Changes
 
 Before you start writing any new code, ensure your local project is up-to-date to avoid conflicts.
